@@ -1,33 +1,26 @@
 const express = require("express");
-
 const app = express();
+const handlebars = require("express-handlebars");
+const Sequelize = require("sequelize");
 
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/html/index.html");
+// Config
+// Template Engine
+app.engine("handlebars", handlebars({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+// Conexão com o banco de dados MySql
+const sequelize = new Sequelize("test", "root", "root", {
+  host: "localhost",
+  dialect: "mysql",
+});
+// Rotas
+app.get("/cad", function (req, res) {
+  res.render("formulario");
 });
 
-app.get("/sobre", function (req, res) {
-  res.sendFile(__dirname + "/html/sobre.html");
-});
-
-app.get("/blog", function (req, res) {
-  res.send("Bem-vindo ao meu blog!");
-});
-
-app.get("/ola/:cargo/:nome/:cor", function (req, res) {
-  res.send(
-    "<h1>Ola " +
-      req.params.nome +
-      "</h1>" +
-      "<h2>Seu cargo e: " +
-      req.params.cargo +
-      "</h2>" +
-      "<h3>Sua cor favorita e: " +
-      req.params.cor +
-      "</h3>"
-  );
+app.post("/add", function (req, res) {
+  res.send("FORMULÁRIO RECEBIDO!");
 });
 
 app.listen(3000, function () {
-  console.log("Servidor Rodando!");
+  console.log("Servidor Rodando na url http://localhost:3000");
 });
